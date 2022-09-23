@@ -1,20 +1,25 @@
 from django.contrib import admin
-from .models import Course, Instructor, Lesson
+from .models import Course, Lesson, Instructor, Learner
 
-# Register your models here.
 
 class LessonInline(admin.StackedInline):
     model = Lesson
     extra = 5
 
 
+# Register your models here.
 class CourseAdmin(admin.ModelAdmin):
-    fields = ['pub_date', 'name', 'description']
     inlines = [LessonInline]
+    list_display = ('name', 'pub_date')
+    list_filter = ['pub_date']
+    search_fields = ['name', 'description']
+
+
+class LessonAdmin(admin.ModelAdmin):
+    list_display = ['title']
+
 
 admin.site.register(Course, CourseAdmin)
-
-class InstructorAdmin(admin.ModelAdmin):
-    fields = ['user', 'full_time']
-
-admin.site.register(Instructor, InstructorAdmin)
+admin.site.register(Lesson, LessonAdmin)
+admin.site.register(Instructor)
+admin.site.register(Learner)
