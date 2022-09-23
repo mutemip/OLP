@@ -49,15 +49,46 @@ from django.http import Http404
 
 
 # class-based views
-class CourseListView(View):
-    def get(self, request):
-        context = {}
-        course_list = Course.objects.order_by('-total_enrolled')[:10]
-        context = {
-            'course_list': course_list
-        }
-        return render(request, 'adminsite/course_list.html', context)
+# class CourseListView(View):
+#     def get(self, request):
+#         context = {}
+#         course_list = Course.objects.order_by('-total_enrolled')[:10]
+#         context = {
+#             'course_list': course_list
+#         }
+#         return render(request, 'adminsite/course_list.html', context)
 
+
+# class EnrollView(View):
+#     def post(self, request, *args, **kwargs):
+#         course_id = kwargs.get('pk')
+#         course = get_object_or_404(Course, pk=course_id)
+#         course.total_enrollment += 1
+#         course.save()
+#         return HttpResponseRedirect(reverse('adminsite:course_details', args=(course.id, )))
+
+# class CourseDetailsView(View):
+#     def get(self, request, *args, **kwags):
+#         context = {}
+#         course_id = kwags.get('pk')
+#         try:
+#             course = Course.objects.get(pk=course_id)
+#             context = {
+#                 'course': course
+#             }
+#             return render(request, 'adminsite/course_detail.html', context)
+#         except Course.DoesNotExist:
+#             raise Http404('The course with given Id is not available!!')
+
+
+
+# Generic Built-in Views
+class CourseListView(generic.ListView):
+    template_name = 'adminsite/course_list.html'
+    context_object_name = 'course_list'
+    def get_queryset(self):
+        courses = Course.objects.order_by('-total_enrollment')[:10]
+        return courses
 
 class EnrollView(View):
     def post(self, request, *args, **kwargs):
@@ -67,15 +98,8 @@ class EnrollView(View):
         course.save()
         return HttpResponseRedirect(reverse('adminsite:course_details', args=(course.id, )))
 
-class CourseDetailsView(View):
-    def get(self, request, *args, **kwags):
-        context = {}
-        course_id = kwags.get('pk')
-        try:
-            course = Course.objects.get(pk=course_id)
-            context = {
-                'course': course
-            }
-            return render(request, 'adminsite/course_detail.html', context)
-        except Course.DoesNotExist:
-            raise Http404('The course with given Id is not available!!')
+
+class CourseDetailsView(generic.DetailView):
+    model = Course
+    template_name = 'adminsite/course_detail.html'
+    
