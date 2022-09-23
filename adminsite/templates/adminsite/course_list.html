@@ -24,6 +24,17 @@
             </div>
         </div>
     </div>
+    {% else %}
+    <div class="rightalign" style="margin-right: 20px;">
+        <div class="dropdown">
+            <button class="dropdown">
+                Visitor
+            </button>
+            <button class="dropdown-content">
+                <a href="{% url 'adminsite:login' %}">Login</a>
+            </button>
+        </div>
+    </div>
 {% endif %}
 
 
