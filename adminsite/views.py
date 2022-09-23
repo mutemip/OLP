@@ -102,4 +102,10 @@ class EnrollView(View):
 class CourseDetailsView(generic.DetailView):
     model = Course
     template_name = 'adminsite/course_detail.html'
+
+
+def logout_request(request):
+    print("Log out the user '{}'".format(request.user.username))
+    logout(request)
+    return redirect('adminsite:popular_course_list')
     

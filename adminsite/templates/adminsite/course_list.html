@@ -11,6 +11,22 @@
 <h2>Popular courses list</h2>
 
 <!-- Add your template there -->
+
+<!--Authentication section-->
+{% if user.is_authenticated %} 
+    <div class="rightalign">
+        <div class="dropdown">
+            <button class="dropbtn">
+                {{user.first_name}}
+            </button>
+            <div class="dropdown-content">
+                <a href="{% url 'adminsite:logout' %}">Logout</a>
+            </div>
+        </div>
+    </div>
+{% endif %}
+
+
 {% if course_list %}
    <ul>
    {% for course in course_list %}

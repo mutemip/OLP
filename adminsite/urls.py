@@ -16,6 +16,9 @@ urlpatterns = [
     path(route='course/<int:pk>/enroll/', view=views.EnrollView.as_view(), name='enroll'),
     path(route='course/<int:pk>/', view=views.CourseDetailsView.as_view(), name='course_details'),
 
+    # authentication paths
+    path('logout/', views.logout_request, name='logout'),
+
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)\
  + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 
