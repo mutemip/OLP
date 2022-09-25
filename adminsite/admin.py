@@ -24,5 +24,8 @@ admin.site.register(Lesson, LessonAdmin)
 
 class InstructorAdmin(admin.ModelAdmin):
     list_display = ('user', 'full_time', 'total_learners')
+    list_filter = ['total_learners']
+
+    
 admin.site.register(Instructor, InstructorAdmin)
 admin.site.register(Learner)

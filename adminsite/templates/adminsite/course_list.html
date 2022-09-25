@@ -43,15 +43,16 @@
 <h2>Popular courses list</h2>
 
 <!--Authentication section-->
+
 {% if course_list %}
     <div class="container"> <!--Stylize root div with .container class -->
         <div class="card-deck"> <!--Stylize the second div with .card-deck class -->
             {% for course in course_list %}
             <div class="card" style="width: 36rem;"> <!--Stylize third div with .card class -->
-                <img class="card-img-left" src="{{MEDIA_URL}}/{{ course.image }}" width="240px" height="240px"
+                <img class="card-img-top" src="media/{{MEDIA_URL}}/{{ course.image }}" width="240px" height="240px"
                            alt="Course image"> <!--Stylize card image with .card-img-left class -->
                 <div class="card-body bg-light"> <!--Stylize root div with .card-body and .bg-light class -->
-                    <h5 class="">{{ course.name }}, <span class="card-title card-title"> <!--Stylize h5 with .card-title and span with .text-success class -->
+                    <h5 class="">{{ course.name }}, <span class="card-title text-success"> <!--Stylize h5 with .card-title and span with .text-success class -->
                               {{ course.total_enrollment}} enrolled</span></h5>
                     <p class="card-text">{{ course.description}}</p> <!--Stylize card description with .card-text class -->
                     <form action="{% url 'adminsite:enroll' course.id %}" method="post">
