@@ -4,64 +4,67 @@
     {% load static %}
     <meta charset="UTF-8">
     <title>Online Courses</title>
-    <link rel="stylesheet" type="text/css" href="{% static 'css/course.css' %}">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <!-- <link rel="stylesheet" type="text/css" href="{% static 'css/course.css' %}"> -->
 </head>
 <body>
 
-<h2>Popular courses list</h2>
+
 
 <!-- Add your template there -->
+<nav class="navbar navbar-light bg-light">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="#">Online Course</a>
+        </div>
+        <ul class="nav navbar-nav navbar-right">
+            {% if user.is_authenticated %}
+            <li>
+                <a class="btn btn-link" href="#">{{ user.first_name }}({{ user.username }})</a>
+                <a class="btn btn-link" href="{% url 'adminsite:logout' %}">Logout</a>
+            </li>
+            {% else %}
+            <li>
+                <form class="form-inline" action="{% url 'adminsite:login' %}" method="post">
+                    {% csrf_token %}
+                    <div class="input-group">
+                        <input type="text" class="form-control" placeholder="Username" name="username" >
+                        <input type="password" class="form-control" placeholder="Password" name="psw" >
+                        <button class="btn btn-primary" type="submit">Login</button>
+                        <a class="btn btn-link" href="{% url 'adminsite:registration' %}">Sign Up</a>
+                    </div>
+                </form>
+            </li>
+            {% endif %}
+        </ul>
+    </div>
+</nav>
+
+<h2>Popular courses list</h2>
 
 <!--Authentication section-->
-{% if user.is_authenticated %} 
-    <div class="rightalign">
-        <div class="dropdown">
-            <button class="dropbtn">
-                {{user.first_name}}
-            </button>
-            <div class="dropdown-content">
-                <a href="{% url 'adminsite:logout' %}">Logout</a>
-            </div>
-        </div>
-    </div>
-    {% else %}
-    <div class="rightalign" style="margin-right: 20px;">
-        <div class="dropdown">
-            <button class="dropdown">
-                Visitor
-            </button>
-            <button class="dropdown-content">
-                <a href="{% url 'adminsite:login' %}">Login</a>
-            </button>
-        </div>
-    </div>
-{% endif %}
-
-
 {% if course_list %}
-   <ul>
-   {% for course in course_list %}
-       <div class="container">
-          <div class="row">
-            <div class="column-33">
-                <img src="{{MEDIA_URL}}/{{ course.image }}" width="360" height="360" >
+    <div class="container"> <!--Stylize root div with .container class -->
+        <div class="card-deck"> <!--Stylize the second div with .card-deck class -->
+            {% for course in course_list %}
+            <div class="card" style="width: 36rem;"> <!--Stylize third div with .card class -->
+                <img class="card-img-left" src="{{MEDIA_URL}}/{{ course.image }}" width="240px" height="240px"
+                           alt="Course image"> <!--Stylize card image with .card-img-left class -->
+                <div class="card-body bg-light"> <!--Stylize root div with .card-body and .bg-light class -->
+                    <h5 class="">{{ course.name }}, <span class="card-title card-title"> <!--Stylize h5 with .card-title and span with .text-success class -->
+                              {{ course.total_enrollment}} enrolled</span></h5>
+                    <p class="card-text">{{ course.description}}</p> <!--Stylize card description with .card-text class -->
+                    <form action="{% url 'adminsite:enroll' course.id %}" method="post">
+                        {% csrf_token %}
+                        <input type="submit" class="btn btn-primary" value="Enroll"> <!--Stylize Enroll button with .btn and .btn-primary class -->
+                    </form>
+                </div>
             </div>
-            <div class="column-66">
-                <h1 class="xlarge-font"><b>{{ course.name }}</b></h1>
-                <p style="color:MediumSeaGreen;"><b>{{course.total_enrollment}} enrolled</b></p>
-                <p> {{ course.description }}</p>
-                <form action="{% url 'adminsite:enroll' course.id %}" method="post">
-                {% csrf_token %}
-                <input class="button"  type="submit"  value="Enroll">
-              </form>
-            </div>
-          </div>
-       </div>
-       <hr>
-   {% endfor %}
-   </ul>
+            {% endfor %}
+        </div>
+    </div>
 {% else %}
-<p>No courses are available.</p>
+    <p>No courses are available.</p>
 {% endif %}
 
 </body>

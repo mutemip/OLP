@@ -52,7 +52,7 @@ logger = logging.getLogger(__name__)
 #             raise Http404("No course matches the given id.")
 
 
-
+#-------------------------------------------------------------------------------------------
 # class-based views
 # class CourseListView(View):
 #     def get(self, request):
@@ -86,7 +86,7 @@ logger = logging.getLogger(__name__)
 #             raise Http404('The course with given Id is not available!!')
 
 
-
+#---------------------------------------------------------------------------------------------
 # Generic Built-in Views
 class CourseListView(generic.ListView):
     template_name = 'adminsite/course_list.html'

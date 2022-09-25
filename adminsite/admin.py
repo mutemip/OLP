@@ -21,5 +21,8 @@ class LessonAdmin(admin.ModelAdmin):
 
 admin.site.register(Course, CourseAdmin)
 admin.site.register(Lesson, LessonAdmin)
-admin.site.register(Instructor)
+
+class InstructorAdmin(admin.ModelAdmin):
+    list_display = ('user', 'full_time', 'total_learners')
+admin.site.register(Instructor, InstructorAdmin)
 admin.site.register(Learner)
